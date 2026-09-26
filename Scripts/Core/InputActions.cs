@@ -26,4 +26,5 @@ public static class InputActions
     public static readonly StringName DevToggleHud = "dev_toggle_hud";
     public static readonly StringName DevToggleDebugDraw = "dev_toggle_debug_draw";
     public static readonly StringName DevRespawn = "dev_respawn";
+    public static readonly StringName DevNextSpawn = "dev_next_spawn";
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using Veilrun.Player;
+using Veilrun.Traversal;
 using Veilrun.Tests.Framework;
 
 namespace Veilrun.Tests;
@@ -402,9 +403,9 @@ public sealed class PlayerMotorTests
     }
 
     [Test]
-    public async Task MeasureMaxClimbableStep(TestContext ctx)
+    public async Task LowObstaclesNeverBlockARunner(TestContext ctx)
     {
-        // Measures how tall a vertical step the capsule rides over without any step-up logic.
+        // Capsule-only limit (traversal disabled) vs. the step-up / quick-climb that covers the rest.
         float[] heights = { 0.05f, 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.4f, 0.5f };
         TestWorld.Floor(ctx);
         for (int i = 0; i < heights.Length; i++)
@@ -415,10 +416,9 @@ public sealed class PlayerMotorTests
         await ctx.PhysicsFrame();
         await ctx.InPhysicsFrame(() =>
         {
-            float maxClimbed = 0f;
-            for (int i = 0; i < heights.Length; i++)
+            float Climb(int i, TraversalTuning traversal)
             {
-                var h = MotorHarness.Create(ctx, _t, new Vector3(i * 4f, 0.05f, 0f));
+                var h = MotorHarness.Create(ctx, _t, new Vector3(i * 4f, 0.05f, 0f), traversal);
                 h.Settle();
                 float peakY = 0f;
                 for (int t = 0; t < 150; t++)
@@ -430,17 +430,23 @@ public sealed class PlayerMotorTests
                     }
                 }
 
-                bool climbed = peakY > heights[i] - 0.02f;
-                if (climbed)
-                {
-                    maxClimbed = Mathf.Max(maxClimbed, heights[i]);
-                }
-
                 h.Dispose();
+                return peakY;
             }
 
-            ctx.Metric("max_climbable_step_without_stepup", maxClimbed, "m");
-            Check.True(maxClimbed < 0.5f, "a 0.5 m block must require a jump (or mantle in M2)");
+            var disabled = new TraversalTuning { MinForwardInput = 2f }; // never triggers obstacle moves
+            float capsuleOnly = 0f;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                if (Climb(i, disabled) > heights[i] - 0.02f)
+                {
+                    capsuleOnly = Mathf.Max(capsuleOnly, heights[i]);
+                }
+
+                Check.True(Climb(i, new TraversalTuning()) > heights[i] - 0.02f, $"a {heights[i]} m step must not block a runner");
+            }
+
+            ctx.Metric("max_step_capsule_only", capsuleOnly, "m");
         });
     }
 

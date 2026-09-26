@@ -30,6 +30,7 @@ public static class InputDefaults
         Bind(InputActions.DevToggleHud, 0.5f, Key(Godot.Key.F1));
         Bind(InputActions.DevToggleDebugDraw, 0.5f, Key(Godot.Key.F2));
         Bind(InputActions.DevRespawn, 0.5f, Key(Godot.Key.F4));
+        Bind(InputActions.DevNextSpawn, 0.5f, Key(Godot.Key.F6));
     }
 
     private static void Bind(StringName action, float deadzone, params InputEvent[] events)

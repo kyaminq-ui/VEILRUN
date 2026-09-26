@@ -125,3 +125,44 @@ Une décision n'est jamais supprimée : on la marque **Superseded by D-xxx**.
 - **Problem** : avec un plafond à 5.5 m/s, un saut depuis la marche gagnait de la vitesse en l'air (3.15 m au lieu d'environ 1.5 m) : le momentum pouvait se fabriquer en l'air.
 - **Decision** : vitesse horizontale atteignable en l'air = max(vitesse d'entrée, 2.5 m/s).
 - **Date** : 2026-09-26
+
+## D-020 — Architecture de la traversée : moves sans état + état unique dans MotorState
+- **Problem** : les mouvements de parkour doivent rester rollbackables (M3) et ne pas transformer `PlayerMotor` en god class.
+- **Decision** : `Veilrun.Traversal` contient des moves **statiques sans état** (`SlideMove`, `RollMove`, `ObstacleMoves`, `LedgeHangMove`, `WallRunMove`, `WallClimbMove`) coordonnés par `TraversalContext`. Tout l'état persistant est dans `MotorState` (kind, temps, paramètres de chemin, normales, cooldowns, buffers, posture). `PlayerMotor` expose des services internes (`MoveBody`, `HandleLanding`, `CanStandAt`, `SyncBodyContactState`…).
+- **Alternatives** : une machine à états d'objets `TraversalState` (plus classique mais l'état se retrouve éparpillé dans des instances → rollback plus difficile).
+- **Consequences** : ajouter un move = champs dans `MotorState` + fichier de move + branchement (checklist dans PARKOUR.md §3).
+- **Date** : 2026-09-26
+
+## D-021 — Moves scriptés (vault, mantle, ledge climb) sans collision pendant le chemin
+- **Decision** : la position suit `TraversalContext.EvaluatePath` (montée avec ease-out puis translation) ; le dégagement est validé **avant** le départ par des capsules de test (point de passage + arrivée).
+- **Reason** : trajectoire parfaitement lisible et déterministe, sans accrochage sur les coins ; coût nul pendant le move.
+- **Consequences** : un obstacle *mobile* apparu pendant le chemin serait traversé (monde statique pour l'instant, voir KNOWN_ISSUES).
+- **Date** : 2026-09-26
+
+## D-022 — Sonde frontale = box cast + rayons, avec budget de queries
+- **Decision** : une boîte fine de la largeur de la capsule (de 0.06 m jusqu'au-dessus de la hauteur de saisie) est balayée vers l'avant (`CastMotion` + `GetRestInfo`), puis des rayons lisent le sommet, la profondeur debout et le bord opposé. Rayons latéraux **doublés** (0.9 m et 1.5 m) pour le wall run. Budget 8 queries par tick (mesuré : 7).
+- **Reason** : jamais de mécanique critique sur un seul rayon ; la boîte voit tout obstacle dans la largeur du corps, à toute hauteur.
+- **Date** : 2026-09-26
+
+## D-023 — Crouch / crouch-walk comme mode discret
+- **Decision** : maintenir accroupi au sol = capsule de 1.1 m, 2 m/s ; se relever exige de la place au-dessus. Donne aux joueurs clavier un moyen de rester lent (réponse partielle à KI-09) et un mouvement de franchissement (tunnels de 1.4 m).
+- **Date** : 2026-09-26
+
+## D-024 — Retournement du wall kick côté présentation
+- **Decision** : le motor émet `MotorEvents.TurnAround` ; `PlayerInput.BeginTurn(π, 0.22 s)` fait tourner le yaw côté client. Le yaw revient ensuite au serveur via les `InputCommand` suivantes.
+- **Reason** : la vue appartient à l'input du client ; le serveur reste autoritaire sur la position.
+- **Date** : 2026-09-26
+
+## D-025 — Hauteurs minimales de traversée à 0.10 m (step-up)
+- **Problem** : la capsule ne franchit que 0.10 m ; avec des moves commençant à 0.35 m, une bordure de 0.15–0.35 m **bloquait** un runner lancé.
+- **Decision** : vault et mantle commencent à 0.10 m ; jusqu'à 0.5 m, le quick climb conserve 100 % de la vitesse (« step-up »). Couvert par le test `LowObstaclesNeverBlockARunner`.
+- **Date** : 2026-09-26
+
+## D-026 — La sonde de resynchronisation « au sol » porte aussi loin que le floor snap
+- **Problem** : les moves scriptés se terminent 2 cm au-dessus de la surface ; la sonde de 1.6 cm (D-010) manquait le sol, le résultat dépendait alors de l'historique → divergence de 15 cm détectée par le test de parcours.
+- **Decision** : sonde vers le bas de `FloorSnapLength + 0.05` m.
+- **Date** : 2026-09-26
+
+## D-027 — Points de spawn de dev (F6)
+- **Decision** : les cartes de test déclarent des `Marker3D` dans le groupe `dev_spawn` ; F6 (build debug) les parcourt dans l'ordre alphabétique et en fait le nouveau point de respawn (F4).
+- **Date** : 2026-09-26

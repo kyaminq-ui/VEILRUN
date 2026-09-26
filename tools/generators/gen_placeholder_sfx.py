@@ -157,6 +157,37 @@ def wind_loop():
     return normalize((base + howl) * gust, -6.0)
 
 
+def hand_plant():
+    n = int(0.3 * SR)
+    j = lambda a=0.1: 1 + rng.uniform(-a, a)
+    slap = band_noise(n, 1500 * j(), 9000) * env_exp(n, 0.0008, 0.012 * j()) * 0.8
+    palm = sweep(n, 220 * j(), 110, 0.01) * env_exp(n, 0.001, 0.02) * 0.5
+    second = delay(band_noise(n, 1200, 8000) * env_exp(n, 0.0008, 0.01), rng.uniform(0.025, 0.05)) * 0.5
+    cloth = band_noise(n, 2500, 9000) * env_exp(n, 0.01, 0.08, 0.02) * 0.15
+    return fade(normalize(slap + palm + second + cloth, -4.0))
+
+
+def slide_loop():
+    dur = 3.0
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    grit = band_noise(n, 600, 6000, -0.4)
+    rumble = band_noise(n, 40, 400, -0.8) * 0.6
+    rough = 0.75 + 0.25 * np.sin(2 * np.pi * t / dur * 37) * np.sin(2 * np.pi * t / dur * 11 + 1.3)
+    return normalize((grit + rumble) * rough, -7.0)
+
+
+def roll():
+    n = int(0.6 * SR)
+    x = np.zeros(n)
+    for k, (tt, a) in enumerate(((0.0, 1.0), (0.13, 0.7), (0.27, 0.55))):
+        step = np.pad(landing(0), (0, max(0, n - int(0.35 * SR))))[:n]
+        x += delay(step, tt + rng.uniform(-0.01, 0.01)) * a
+    t = np.arange(n) / SR
+    x += band_noise(n, 400, 3000, -0.5) * np.sin(np.clip(t / 0.5, 0, 1) * np.pi) ** 2 * 0.35
+    return fade(normalize(x, -2.5), 20)
+
+
 # ---------------------------------------------------------------- emit
 if __name__ == "__main__":
     for i in range(1, 9):
@@ -168,6 +199,11 @@ if __name__ == "__main__":
     for tier, name in enumerate(("soft", "medium", "heavy", "deadly")):
         for i in range(1, (4 if tier < 3 else 2)):
             write_wav(f"land_{name}_{i:02d}.wav", landing(tier))
+    for i in range(1, 5):
+        write_wav(f"hand_plant_{i:02d}.wav", hand_plant())
+    for i in range(1, 3):
+        write_wav(f"roll_{i:02d}.wav", roll())
+    write_wav("slide_loop.wav", slide_loop(), loop=True)
     write_wav("breath_calm_loop.wav", breath_loop(False), loop=True)
     write_wav("breath_heavy_loop.wav", breath_loop(True), loop=True)
     write_wav("wind_loop.wav", wind_loop(), loop=True)

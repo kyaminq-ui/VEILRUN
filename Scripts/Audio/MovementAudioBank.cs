@@ -23,6 +23,13 @@ public partial class MovementAudioBank : Resource
     [Export] public SfxEvent LandHeavy { get; set; } = new();
     [Export] public SfxEvent LandDeadly { get; set; } = new();
 
+    /// <summary>Hands on an obstacle: vault, mantle, ledge grab, ledge climb.</summary>
+    [ExportGroup("Parkour")]
+    [Export] public SfxEvent HandPlant { get; set; } = new();
+    [Export] public SfxEvent Roll { get; set; } = new();
+    [Export] public AudioStream? SlideLoop { get; set; }
+    [Export(PropertyHint.Range, "-40,6,0.5,suffix:dB")] public float SlideVolumeDb { get; set; } = -4f;
+
     [ExportGroup("Breathing")]
     [Export] public AudioStream? BreathCalmLoop { get; set; }
     [Export] public AudioStream? BreathHeavyLoop { get; set; }

@@ -8,7 +8,7 @@ Cible PC initiale : **1080p · 60 FPS · PC gamer milieu de gamme**.
 | Frame CPU totale | ≤ 16.6 ms | ~7 ms (144 FPS, vsync) sur la machine de dev |
 | Physique (tick 60 Hz) | ≤ 2 ms avec 8 runners | 0.29–0.39 ms (1 runner + CSG) |
 | Motor par runner et par tick | ≤ 0.05 ms | < 0.3 ms total (inclut Jolt) — à profiler finement en M3 |
-| Queries physiques par runner et par tick | M1 : 1 `MoveAndSlide` ; M2 : ≤ 6 shape casts centralisés | 1 |
+| Queries physiques par runner et par tick | ≤ 8 (budget `TraversalTuning.MaxQueriesPerTick`) + 1 `MoveAndSlide` | **7** au pic (parcours complet), 0–2 en course normale, 2 en wall run |
 | Draw calls | ≤ 2 000 | non mesuré |
 | Triangles visibles | ≤ 3 M | non mesuré |
 | VRAM | ≤ 3 Go | non mesuré |

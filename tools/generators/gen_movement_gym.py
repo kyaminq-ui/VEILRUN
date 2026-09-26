@@ -43,7 +43,7 @@ def plank(name, x, width, z0, y0, z1, y1, mat, thickness=0.4):
 
 
 # ---------------- Floor ----------------
-box("Floor", (0, -0.5, 0), (200, 1, 200), "floor")
+box("Floor", (0, -0.5, 0), (400, 1, 400), "floor")
 label("SPAWN", (0, 2.6, 8), "Color(0.4, 1, 0.9, 1)")
 
 # ---------------- A. Gap lanes (deck top y=2, gaps measured edge to edge) ----------------
@@ -89,6 +89,58 @@ box("CorridorWallA", (-52.0, 1.5, -10), (0.5, 3, 10), "wall")
 box("CorridorWallB", (-53.7, 1.5, -10), (0.5, 3, 10), "wall")
 label("CORRIDOR 1.2 m", (-52.85, 3.6, -4.5))
 label("DOOR 1.0 x 2.1 m", (-45, 3.6, 12))
+
+# ---------------- F. M2 Parkour Lab (x 80..160, lanes run toward -Z, 45 m runway from z = +15) ----------------
+LAB = "Color(0.55, 1, 0.75, 1)"
+label("PARKOUR LAB (M2)", (118, 7.5, 18), LAB, 96)
+
+# Vault lane: rails of increasing height (thin = vaultable), a floor pipe.
+label("VAULT", (80, 4.2, -18), LAB)
+for i, (h, z) in enumerate([(0.5, -20), (1.0, -35), (1.3, -50)]):
+    box(f"Lab_VaultRail_{h}m", (80, h / 2, z), (4, h, 0.2), "obstacle")
+    label(f"rail {h} m", (80, h + 0.7, z + 1.5))
+
+# Climb lane: step-up 0.4, quick climb 0.9, mantle 1.6, max ground mantle 2.0 (each 4 m deep).
+label("STEP / CLIMB / MANTLE", (88, 4.6, -18), LAB)
+for h, z in [(0.4, -20), (0.9, -32), (1.6, -44), (2.0, -56)]:
+    box(f"Lab_Climb_{h}m", (88, h / 2, z), (4, h, 4), "obstacle")
+    label(f"{h} m", (88, h + 0.7, z + 2.6))
+
+# Ledge / wall-climb walls: 2.6 & 3.0 (jump → ledge), 3.5 & 3.75 (wall climb → ledge), 4.25 (wall kick practice).
+label("LEDGES & WALL CLIMB", (112, 6.2, -24), LAB)
+for i, h in enumerate([2.6, 3.0, 3.5, 3.75, 4.25]):
+    x = 96 + i * 8
+    box(f"Lab_Ledge_{h}m", (x, h / 2, -32), (6, h, 4), "obstacle")
+    label(f"{h} m", (x, h + 0.7, -29.4))
+
+# Slide bar (1.0 m clearance) and crouch tunnel (1.4 m clearance, 8 m long).
+label("SLIDE / CROUCH", (138, 4.2, -18), LAB)
+box("Lab_SlideBar", (138, 1.25, -30), (4, 0.5, 1.5), "wall")
+label("slide under 1.0 m", (138, 2.2, -28.5))
+box("Lab_CrouchTunnel", (138, 1.65, -50), (4, 0.5, 8), "wall")
+label("crouch 1.4 m", (138, 2.6, -45.5))
+
+# Wall-run corridor: two parallel walls 4.0 m apart (wall run, wall-to-wall jumps).
+label("WALL RUN CORRIDOR", (152, 6.2, -8), LAB)
+box("Lab_WallRunLeft", (149.5, 2.5, -35), (1, 5, 40), "wall")
+box("Lab_WallRunRight", (154.5, 2.5, -35), (1, 5, 40), "wall")
+label("4.0 m apart", (152, 5.6, -15))
+
+# Dev spawn points (F6 cycles through them in debug builds).
+SPAWNS = [
+    ("00_Start", (0, 0.05, 8)),
+    ("01_Gaps", (-20, 0.05, 14)),
+    ("02_Heights", (13, 0.05, 4)),
+    ("03_DropRamp", (36, 0.05, 14)),
+    ("04_Slopes", (59, 0.05, 6)),
+    ("05_Walls", (-45, 0.05, 4)),
+    ("06_LabVault", (80, 0.05, 15)),
+    ("07_LabClimb", (88, 0.05, 15)),
+    ("08_LabLedge3m", (104, 0.05, 15)),
+    ("09_LabWallClimb3_5m", (112, 0.05, 15)),
+    ("10_LabSlide", (138, 0.05, 15)),
+    ("11_LabWallRun", (150.4, 0.05, 15)),
+]
 
 # ---------------- Emit ----------------
 FLOOR_TEX = "res://Dev/Textures/Grid/PNG/Dark_Floor/texture_03.png"
@@ -176,6 +228,11 @@ for i, (text, pos, color, size) in enumerate(labels):
                f'text = "{text}"\n'
                f'font_size = {size}\n'
                f'outline_size = 18\n\n')
+
+out.append('[node name="DevSpawns" type="Node3D" parent="."]\n\n')
+for name, pos in SPAWNS:
+    out.append(f'[node name="{name}" type="Marker3D" parent="DevSpawns" groups=["dev_spawn"]]\n'
+               f'transform = {xform(pos)}\n\n')
 
 out.append(f'[node name="Runner" parent="." instance=ExtResource("1_runner")]\n'
            f'transform = {xform((0, 0.05, 8))}\n')

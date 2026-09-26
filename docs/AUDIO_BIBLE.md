@@ -1,6 +1,6 @@
 # VEILRUN — Audio Bible (provisoire)
 
-Le son est une **composante mécanique**. État (v0.1.1) : audio de mouvement en place avec des **placeholders procéduraux**. Pas béton / métal, saut, 4 paliers de réception, respiration (calme ↔ effort, selon l'effort accumulé) et vent (selon la vitesse totale). Bus : Master → Music / SFX (→ Movement) / UI (`default_bus_layout.tres`).
+Le son est une **composante mécanique**. État (v0.1.1) : audio de mouvement en place avec des **placeholders procéduraux**. Pas béton / métal (et pas sur les murs pendant le wall run / wall climb), saut, 4 paliers de réception, **hand plant** (vault / mantle / rebord), **boucle de slide**, **roulade**, respiration (calme ↔ effort) et vent (selon la vitesse totale). Bus : Master → Music / SFX (→ Movement) / UI (`default_bus_layout.tres`).
 
 ## 1. Gameplay audio
 À entendre : pas, vêtements, respiration, contacts des mains, impacts de vault, réceptions, contacts muraux, vent (fonction de la vitesse), runners proches, indices de poursuivant, environnement.

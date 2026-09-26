@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Player/Runner.cs" id="1_runner"]
 [ext_resource type="Resource" path="res://Resources/Movement/DefaultMovementTuning.tres" id="2_move"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://Resources/Movement/DefaultCameraTuning.tres" id="6_camtuning"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerAudio.cs" id="7_audio"]
 [ext_resource type="Resource" path="res://Resources/Audio/DefaultMovementAudio.tres" id="8_audiobank"]
+[ext_resource type="Resource" path="res://Resources/Movement/DefaultTraversalTuning.tres" id="9_traversal"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -23,6 +24,7 @@ albedo_color = Color(0.15, 0.75, 0.85, 1)
 [node name="Runner" type="CharacterBody3D" node_paths=PackedStringArray("PlayerInput", "PlayerCamera", "CollisionShape", "PlayerAudio")]
 script = ExtResource("1_runner")
 Tuning = ExtResource("2_move")
+TraversalTuning = ExtResource("9_traversal")
 PlayerInput = NodePath("PlayerInput")
 PlayerCamera = NodePath("PlayerCamera")
 CollisionShape = NodePath("Collision")

@@ -2,6 +2,20 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Versions : `0.<milestone>.<patch>` jusqu'à l'alpha.
 
+## [0.2.0] — 2026-09-26 — M2 Core Parkour
+
+### Added
+- **Traversée** (`Scripts/Traversal`) : slide et slide jump, crouch / crouch-walk, step-up, quick climb, vault, mantle, ledge grab / climb / drop / shimmy / eject arrière, wall run et wall jump, wall climb et wall kick (vue retournée), landing roll, land-into-slide.
+- `TraversalProbes` : sondes centralisées (box cast + rayons + capsules de dégagement), budget de queries (mesuré 7/8), segments de debug (F2).
+- `TraversalTuning` (`Resources/Movement/DefaultTraversalTuning.tres`), `MoveInput`, nouveaux champs rollbackables dans `MotorState`, événements `Started` / `Ended` / `WallJumped` / `TurnAround`, `LandingEvent.Rolled`.
+- Caméra : hauteur des yeux selon la posture, penché en wall run, plongée à la roulade. Audio : hand plant, slide loop, roulade (placeholders procéduraux).
+- Movement Gym : **Parkour Lab** (rambardes, blocs, murs de rebord / wall climb, barre de slide, tunnel accroupi, couloir de wall run) et 12 points de spawn de dev (**F6**).
+- 13 tests de traversée, dont un parcours de déterminisme (vault → slide → mantle → wall run) rejoué depuis 180 checkpoints.
+
+### Fixed
+- La resynchronisation du flag « au sol » après un move scripté pouvait rater le sol (divergence de replay de 15 cm) — D-026.
+- Les bordures de 0.15–0.35 m bloquaient un runner (D-025).
+
 ## [0.1.1] — 2026-09-26 — M1 feedback pass
 
 ### Changed

@@ -26,6 +26,15 @@ public partial class CameraTuning : Resource
     /// <summary>Pitch kick at maximum dip.</summary>
     [Export(PropertyHint.Range, "0,10,0.1,suffix:°")] public float LandingPitchKickDegrees { get; set; } = 3.5f;
 
+    /// <summary>How fast the eye height follows crouch / slide / stand changes.</summary>
+    [ExportGroup("Posture & Parkour")]
+    [Export(PropertyHint.Range, "1,40,0.5")] public float EyeHeightSmoothing { get; set; } = 14f;
+    /// <summary>Lean away from the wall during a wall run (scaled by the Camera Roll setting).</summary>
+    [Export(PropertyHint.Range, "0,20,0.5,suffix:°")] public float WallRunLeanDegrees { get; set; } = 8f;
+    [Export(PropertyHint.Range, "1,30,0.5")] public float WallRunLeanSmoothing { get; set; } = 10f;
+    /// <summary>Forward pitch dip at the middle of a landing roll (scaled by Landing Shake).</summary>
+    [Export(PropertyHint.Range, "0,90,1,suffix:°")] public float LandingRollPitchDegrees { get; set; } = 40f;
+
     [ExportGroup("Roll")]
     [Export(PropertyHint.Range, "0,6,0.1,suffix:°")] public float StrafeRollDegrees { get; set; } = 1.2f;
     [Export(PropertyHint.Range, "1,30,0.5")] public float RollSmoothing { get; set; } = 8f;

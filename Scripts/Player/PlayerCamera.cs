@@ -1,6 +1,7 @@
 using Godot;
 using Veilrun.Core;
 using Veilrun.Core.Settings;
+using Veilrun.Traversal;
 
 namespace Veilrun.Player;
 
@@ -23,6 +24,8 @@ public partial class PlayerCamera : Node3D
     private float _dipVelocity;
     private float _roll;
     private float _fovBonus;
+    private float _eyeHeight = -1f;
+    private float _wallLean;
 
     [Export] public CameraTuning Tuning { get; set; } = null!;
     [Export] public UserSettings Settings { get; set; } = null!;
@@ -46,7 +49,8 @@ public partial class PlayerCamera : Node3D
 
     public void ResetEffects()
     {
-        _bobWeight = _dipOffset = _dipVelocity = _roll = _fovBonus = 0f;
+        _bobWeight = _dipOffset = _dipVelocity = _roll = _fovBonus = _wallLean = 0f;
+        _eyeHeight = -1f;
     }
 
     public void OnLanded(in LandingEvent landing)
@@ -74,6 +78,7 @@ public partial class PlayerCamera : Node3D
         UpdateLandingSpring(dt);
         UpdateRoll(state, yawBasis, move, dt);
         UpdateFov(speed, move, dt);
+        UpdatePosture(state, dt);
 
         float bobAmount = _bobWeight * Settings.EffectiveHeadBob;
         // Lowest point exactly on each footstep (phase = kπ); lateral sway alternates per foot.
@@ -83,13 +88,38 @@ public partial class PlayerCamera : Node3D
             0f);
 
         Vector3 feet = _runner.PreviousTickPosition.Lerp(_runner.CurrentTickPosition, fraction);
-        Vector3 eye = feet + Vector3.Up * (move.EyeHeight + _dipOffset) + yawBasis * bob;
+        Vector3 eye = feet + Vector3.Up * (_eyeHeight + _dipOffset) + yawBasis * bob;
         GlobalTransform = new Transform3D(yawBasis, eye);
 
         float dipNormalized = Tuning.LandingMaxDip > 0f ? _dipOffset / Tuning.LandingMaxDip : 0f;
         float pitchKick = Mathf.DegToRad(Tuning.LandingPitchKickDegrees) * dipNormalized;
-        Camera.Transform = new Transform3D(Basis.FromEuler(new Vector3(_input.Pitch + pitchKick, 0f, _roll)), Vector3.Zero);
+        float rollPitch = RollPitch(state);
+        Camera.Transform = new Transform3D(Basis.FromEuler(new Vector3(_input.Pitch + pitchKick + rollPitch, 0f, _roll + _wallLean)), Vector3.Zero);
         Camera.Fov = Settings.FieldOfView + _fovBonus;
+    }
+
+    /// <summary>Eye height follows posture (stand / crouch / slide); lean away from the wall while wall running.</summary>
+    private void UpdatePosture(in MotorState state, float dt)
+    {
+        float target = _runner!.Motor.EyeHeightFor(state);
+        _eyeHeight = _eyeHeight < 0f ? target : MathUtil.ExpDecay(_eyeHeight, target, Tuning.EyeHeightSmoothing, dt);
+
+        float lean = state.Traversal == TraversalKind.WallRun
+            ? state.WallSide * Mathf.DegToRad(Tuning.WallRunLeanDegrees) * Settings.EffectiveCameraRoll
+            : 0f;
+        _wallLean = MathUtil.ExpDecay(_wallLean, lean, Tuning.WallRunLeanSmoothing, dt);
+    }
+
+    /// <summary>Forward pitch dip following the landing roll (a comfort-friendly stand-in for a full flip).</summary>
+    private float RollPitch(in MotorState state)
+    {
+        if (state.Traversal != TraversalKind.Roll)
+        {
+            return 0f;
+        }
+
+        float u = Mathf.Clamp(state.TraversalTime / _runner!.Motor.TraversalTuning.RollDuration, 0f, 1f);
+        return -Mathf.Sin(u * Mathf.Pi) * Mathf.DegToRad(Tuning.LandingRollPitchDegrees) * Settings.EffectiveLandingShake;
     }
 
     private void UpdateBobWeight(in MotorState state, float speed, MovementTuning move, float dt)

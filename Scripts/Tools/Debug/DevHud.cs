@@ -56,7 +56,7 @@ public partial class DevHud : CanvasLayer
 
         _sinceRefresh = 0;
         _sb.Clear();
-        _sb.AppendLine("VEILRUN DEV   F1 hud · F2 debug draw · F4 respawn · Esc mouse");
+        _sb.AppendLine("VEILRUN DEV   F1 hud · F2 debug draw · F4 respawn · F6 next spawn · Esc mouse");
         double fps = Engine.GetFramesPerSecond();
         _sb.Append("FPS ").Append(fps.ToString("0"))
            .Append("   frame ").Append((Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000.0).ToString("0.00")).Append(" ms")

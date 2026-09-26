@@ -19,8 +19,10 @@ EVENTS = {
     "LandMedium": ("land_medium_*.wav", -3.0, 0.8, 1.0),
     "LandHeavy": ("land_heavy_*.wav", -1.0, 0.6, 1.0),
     "LandDeadly": ("land_deadly_*.wav", 0.0, 0.3, 0.5),
+    "HandPlant": ("hand_plant_*.wav", -5.0, 1.0, 1.5),
+    "Roll": ("roll_*.wav", -3.0, 0.6, 1.0),
 }
-LOOPS = {"BreathCalmLoop": "breath_calm_loop.wav", "BreathHeavyLoop": "breath_heavy_loop.wav", "WindLoop": "wind_loop.wav"}
+LOOPS = {"SlideLoop": "slide_loop.wav", "BreathCalmLoop": "breath_calm_loop.wav", "BreathHeavyLoop": "breath_heavy_loop.wav", "WindLoop": "wind_loop.wav"}
 
 ext, ids = [], {}
 

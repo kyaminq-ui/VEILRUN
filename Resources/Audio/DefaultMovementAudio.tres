@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MovementAudioBank" load_steps=41 format=3]
+[gd_resource type="Resource" script_class="MovementAudioBank" load_steps=50 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Audio/MovementAudioBank.cs" id="1_Script"]
 [ext_resource type="Script" path="res://Scripts/Audio/SfxEvent.cs" id="2_Script"]
@@ -30,9 +30,16 @@
 [ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_heavy_02.wav" id="28_AudioStream"]
 [ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_heavy_03.wav" id="29_AudioStream"]
 [ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_deadly_01.wav" id="30_AudioStream"]
-[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_calm_loop.wav" id="31_AudioStream"]
-[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_heavy_loop.wav" id="32_AudioStream"]
-[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/wind_loop.wav" id="33_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/hand_plant_01.wav" id="31_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/hand_plant_02.wav" id="32_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/hand_plant_03.wav" id="33_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/hand_plant_04.wav" id="34_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/roll_01.wav" id="35_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/roll_02.wav" id="36_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/slide_loop.wav" id="37_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_calm_loop.wav" id="38_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_heavy_loop.wav" id="39_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/wind_loop.wav" id="40_AudioStream"]
 
 [sub_resource type="Resource" id="SfxEvent_FootstepConcrete"]
 script = ExtResource("2_Script")
@@ -83,6 +90,20 @@ VolumeDb = 0.0
 RandomPitchSemitones = 0.3
 RandomVolumeDb = 0.5
 
+[sub_resource type="Resource" id="SfxEvent_HandPlant"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("31_AudioStream"), ExtResource("32_AudioStream"), ExtResource("33_AudioStream"), ExtResource("34_AudioStream")])
+VolumeDb = -5.0
+RandomPitchSemitones = 1.0
+RandomVolumeDb = 1.5
+
+[sub_resource type="Resource" id="SfxEvent_Roll"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("35_AudioStream"), ExtResource("36_AudioStream")])
+VolumeDb = -3.0
+RandomPitchSemitones = 0.6
+RandomVolumeDb = 1.0
+
 [resource]
 script = ExtResource("1_Script")
 FootstepConcrete = SubResource("SfxEvent_FootstepConcrete")
@@ -92,6 +113,9 @@ LandSoft = SubResource("SfxEvent_LandSoft")
 LandMedium = SubResource("SfxEvent_LandMedium")
 LandHeavy = SubResource("SfxEvent_LandHeavy")
 LandDeadly = SubResource("SfxEvent_LandDeadly")
-BreathCalmLoop = ExtResource("31_AudioStream")
-BreathHeavyLoop = ExtResource("32_AudioStream")
-WindLoop = ExtResource("33_AudioStream")
+HandPlant = SubResource("SfxEvent_HandPlant")
+Roll = SubResource("SfxEvent_Roll")
+SlideLoop = ExtResource("37_AudioStream")
+BreathCalmLoop = ExtResource("38_AudioStream")
+BreathHeavyLoop = ExtResource("39_AudioStream")
+WindLoop = ExtResource("40_AudioStream")

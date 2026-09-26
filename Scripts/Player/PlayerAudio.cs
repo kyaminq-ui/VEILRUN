@@ -2,6 +2,7 @@ using System.Text;
 using Godot;
 using Veilrun.Audio;
 using Veilrun.Tools.Debug;
+using Veilrun.Traversal;
 
 namespace Veilrun.Player;
 
@@ -20,6 +21,7 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
     private AudioStreamPlayer? _breathCalm;
     private AudioStreamPlayer? _breathHeavy;
     private AudioStreamPlayer? _wind;
+    private AudioStreamPlayer? _slide;
     private Runner? _runner;
     private DevTools? _dev;
     private float _exertion;
@@ -42,6 +44,7 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
         _breathCalm = CreateLoop("BreathCalm", Bank.BreathCalmLoop, bus);
         _breathHeavy = CreateLoop("BreathHeavy", Bank.BreathHeavyLoop, bus);
         _wind = CreateLoop("Wind", Bank.WindLoop, bus);
+        _slide = CreateLoop("Slide", Bank.SlideLoop, bus);
     }
 
     public void Bind(Runner runner)
@@ -51,6 +54,7 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
         runner.Landed += OnLanded;
         runner.Footstep += OnFootstep;
         runner.Respawned += OnRespawned;
+        runner.TraversalStarted += OnTraversalStarted;
         _dev = DevTools.Find(this);
         _dev?.Register(this);
     }
@@ -63,6 +67,7 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
             _runner.Landed -= OnLanded;
             _runner.Footstep -= OnFootstep;
             _runner.Respawned -= OnRespawned;
+            _runner.TraversalStarted -= OnTraversalStarted;
         }
 
         _dev?.Unregister(this);
@@ -89,6 +94,10 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
 
         SetLoopVolume(_breathCalm, Bank.BreathVolumeDb, 1f - _exertion);
         SetLoopVolume(_breathHeavy, Bank.BreathVolumeDb, _exertion);
+
+        // Slide: friction loop scaled by slide speed.
+        bool sliding = s.Traversal == TraversalKind.Slide;
+        SetLoopVolume(_slide, Bank.SlideVolumeDb, sliding ? Mathf.Clamp(s.HorizontalSpeed / move.SprintSpeed, 0.2f, 1f) : 0f);
 
         // Wind: rushing air from total speed (includes falling), pitched up with speed.
         float airSpeed = s.Velocity.Length();
@@ -134,6 +143,22 @@ public partial class PlayerAudio : Node, IDebugInfoProvider
     }
 
     private void OnRespawned() => _exertion = 0f;
+
+    private void OnTraversalStarted(TraversalKind kind)
+    {
+        switch (kind)
+        {
+            case TraversalKind.Vault:
+            case TraversalKind.Mantle:
+            case TraversalKind.LedgeHang:
+            case TraversalKind.LedgeClimb:
+                Play(Bank.HandPlant, 0f);
+                break;
+            case TraversalKind.Roll:
+                Play(Bank.Roll, 0f);
+                break;
+        }
+    }
 
     private void Play(SfxEvent sfx, float extraDb)
     {

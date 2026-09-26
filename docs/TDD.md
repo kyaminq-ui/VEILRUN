@@ -1,6 +1,6 @@
 # VEILRUN — Technical Design Document
 
-Version 0.1.0 — 2026-09-26 — état : fin M0 / début M1.
+Version 0.2.0 — 2026-09-26 — état : M2 (Core Parkour) implémenté.
 
 ## 1. Stack
 
@@ -29,8 +29,10 @@ res://
 │   └── Tests/TestRunner.tscn
 └── Scripts/
     ├── Core/           Boot, InputActions, InputDefaults, Log, MathUtil, Settings/UserSettings
-    ├── Player/         Runner, PlayerInput, PlayerMotor, PlayerCamera, LocomotionMath,
-    │                   MotorState, InputCommand, MovementTuning, CameraTuning
+    ├── Player/         Runner, PlayerInput, PlayerMotor, PlayerCamera, PlayerAudio, LocomotionMath,
+    │                   MotorState, MoveInput, InputCommand, MovementTuning, CameraTuning
+    ├── Traversal/      TraversalContext, TraversalProbes, TraversalTuning, TraversalKind, Moves/*
+    ├── Audio/          SurfaceType, SfxEvent, MovementAudioBank
     ├── Tools/Debug/    DevTools (autoload), DevHud, DebugDraw, IDebugInfoProvider
     └── Tests/          Framework/ (runner, harness), LocomotionMathTests, PlayerMotorTests
 /docs  /tools  /build
@@ -57,7 +59,8 @@ Runner (CharacterBody3D, Runner.cs)          ← racine de composition, boucle d
 ├── PlayerInput (Node)                       ← périphériques → InputCommand
 └── PlayerCamera (Node3D, top_level)         ← caméra procédurale
     └── Camera3D
-PlayerMotor  (classe C#, pas un Node)        ← simulation
+PlayerAudio (Node)                           ← sons de mouvement (présentation)
+PlayerMotor  (classe C#, pas un Node)        ← simulation (locomotion + traversée, voir PARKOUR.md §3)
 ```
 
 ### 4.1 Boucle de tick (`Runner._PhysicsProcess`, 60 Hz)
@@ -86,7 +89,7 @@ Voir D-007. Effets (tous réglables dans `CameraTuning`, modulés par `UserSetti
 - **F4** : respawn. **Échap** : libère la souris (un clic la recapture).
 
 ## 7. Tests
-`tools/run_tests.ps1 [-Filter X]` : build puis Godot `--headless` sur `TestRunner.tscn`. 22 tests (9 mathématiques pures + 13 physiques Jolt). Les tests physiques exécutent N ticks dans une seule frame physique : même mécanique que le replay de reconciliation.
+`tools/run_tests.ps1 [-Filter X]` : build puis Godot `--headless` sur `TestRunner.tscn`. 35 tests (9 mathématiques pures + 13 physiques de locomotion + 13 de traversée). Les tests physiques exécutent N ticks dans une seule frame physique : même mécanique que le replay de reconciliation.
 
 ## 8. Contrôles par défaut (keycodes physiques)
 | Action | Clavier (position QWERTY) | AZERTY | Manette |
@@ -94,4 +97,5 @@ Voir D-007. Effets (tous réglables dans `CameraTuning`, modulés par `UserSetti
 | Déplacement (maintenir avancer = marche → course → sprint) | W A S D | Z Q S D | stick gauche (< 60 % = marche) |
 | Regard | souris | souris | stick droit |
 | Saut | Espace | Espace | A / Croix |
-| Accroupi (réservé M2) | Ctrl / C | Ctrl / C | B / Rond |
+| Accroupi (maintenir) / slide (à vitesse) / roulade (avant réception) / lâcher un rebord | Ctrl / C | Ctrl / C | B / Rond |
+| Dev : prochain point de spawn | F6 | F6 | — |

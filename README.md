@@ -4,7 +4,7 @@ FPS parkour multijoueur compétitif, chasse et contre-chasse. Godot 4.7.2 Mono �
 
 ## Démarrer
 1. Ouvrir le projet avec **Godot 4.7.2 Mono** puis lancer (F5) : la scène principale est la **Movement Gym**.
-2. Contrôles : ZQSD / WASD (positions physiques ; maintenir avancer = marche → course → sprint) · souris · Espace saut · **F1** Dev HUD · **F2** debug draw · **F4** respawn · Échap libère la souris.
+2. Contrôles : ZQSD / WASD (positions physiques ; maintenir avancer = marche → course → sprint) · souris · Espace saut · Ctrl / C accroupi / slide / roulade · **F1** Dev HUD · **F2** debug draw · **F4** respawn · **F6** point de spawn suivant · Échap libère la souris.
 
 ## Build & tests
 ```powershell

@@ -1,5 +1,6 @@
 using Godot;
 using Veilrun.Player;
+using Veilrun.Traversal;
 
 namespace Veilrun.Tests.Framework;
 
@@ -29,7 +30,7 @@ public sealed class MotorHarness
     public ref readonly MotorState State => ref Motor.State;
 
     /// <summary>Spawn a runner body with its feet at <paramref name="feet"/>.</summary>
-    public static MotorHarness Create(TestContext ctx, MovementTuning tuning, Vector3 feet)
+    public static MotorHarness Create(TestContext ctx, MovementTuning tuning, Vector3 feet, TraversalTuning? traversal = null)
     {
         var body = new CharacterBody3D { Name = "Body" };
         body.AddChild(new CollisionShape3D
@@ -39,7 +40,7 @@ public sealed class MotorHarness
         });
         ctx.Sandbox.AddChild(body);
         body.GlobalPosition = feet;
-        return new MotorHarness(body, new PlayerMotor(body, tuning), ctx.PhysicsDelta);
+        return new MotorHarness(body, new PlayerMotor(body, tuning, traversal), ctx.PhysicsDelta);
     }
 
     public InputCommand Command(Vector2 move, float yaw = 0f, InputButtons buttons = InputButtons.None) =>

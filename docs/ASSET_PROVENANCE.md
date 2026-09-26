@@ -8,7 +8,7 @@ Statuts : `dev-only` (jamais livré) · `placeholder` · `candidate` · `final` 
 | `Dev/Textures/Grid/PNG/Dark_Floor/texture_03.png` (+ `.svg`, `.swf`) | Présent à l'initialisation du projet. Nommage et format identiques au pack **Kenney « Prototype Textures »** — **à confirmer par le propriétaire** | — | avant le 2026-09-26 | **Non vérifiée** (Kenney = CC0 si confirmé) | déplacé de `res://grid_textures/` | dev-only |
 | `Dev/Textures/Grid/PNG/Orange_Wall/texture_04.png` (+ `.svg`, `.swf`) | idem | — | avant le 2026-09-26 | **Non vérifiée** | idem | dev-only |
 | `icon.svg` | icône par défaut de Godot | Godot | 2026-09-26 | MIT (Godot) | aucune | placeholder |
-| `Assets/Audio/SFX/Placeholder/Movement/*.wav` (31 fichiers : pas béton / métal, saut, réceptions ×4 paliers, respiration ×2, vent) | généré dans ce dépôt par `tools/generators/gen_placeholder_sfx.py` (synthèse de bruit / sinus, seed fixe) | Python + numpy | 2026-09-26 | œuvre originale du projet | — | placeholder |
+| `Assets/Audio/SFX/Placeholder/Movement/*.wav` (38 fichiers : pas béton / métal, saut, réceptions ×4 paliers, hand plant, roulade, slide, respiration ×2, vent) | généré dans ce dépôt par `tools/generators/gen_placeholder_sfx.py` (synthèse de bruit / sinus, seed fixe) | Python + numpy | 2026-09-26 | œuvre originale du projet | — | placeholder |
 | `SFX_PACK/` (8 166 fichiers) | **audio extrait de Mirror's Edge (EA / DICE)** — voir D-017 | — | 2026-09-26 | **propriété d'EA — non utilisable** | exclu de Git et de Godot | **rejected** |
 | `addons/godot_ai/` | plugin « Godot AI » v4.2.3 (MCP Godot-AI by dlight) | — | 2026-09-26 | voir `addons/godot_ai/LICENSE` | aucune | outil éditeur (hors build) |
 

@@ -14,6 +14,8 @@ public partial class PlayerInput : Node
     private const float MaxPitch = 1.5533f; // 89°
 
     private InputButtons _latchedPresses;
+    private float _turnRemaining;
+    private float _turnSpeed;
     private uint _sequence;
 
     [Export] public UserSettings Settings { get; set; } = null!;
@@ -68,8 +70,22 @@ public partial class PlayerInput : Node
         }
     }
 
+    /// <summary>Smoothly rotate the view by <paramref name="radians"/> (e.g. wall kick turn-around).</summary>
+    public void BeginTurn(float radians, float duration)
+    {
+        _turnRemaining = radians;
+        _turnSpeed = Mathf.Abs(radians) / Mathf.Max(duration, 0.01f);
+    }
+
     public override void _Process(double delta)
     {
+        if (_turnRemaining != 0f)
+        {
+            float step = Mathf.Min(Mathf.Abs(_turnRemaining), _turnSpeed * (float)delta) * Mathf.Sign(_turnRemaining);
+            _turnRemaining -= step;
+            SetLook(Yaw + step, Pitch);
+        }
+
         Vector2 stick = Input.GetVector(InputActions.LookLeft, InputActions.LookRight, InputActions.LookDown, InputActions.LookUp);
         if (stick != Vector2.Zero)
         {
