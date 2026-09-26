@@ -1,0 +1,5 @@
+{
+  "files.exclude": { "**/.godot": true, "**/bin": true, "**/obj": true },
+  "dotnet.defaultSolution": "VEILRUN.sln",
+  "editor.formatOnSave": false
+}

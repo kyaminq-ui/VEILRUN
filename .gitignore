@@ -1,0 +1,40 @@
+# --- Godot 4 ---
+.godot/
+/android/
+*.translation
+export_credentials.cfg
+
+# --- C# / .NET ---
+bin/
+obj/
+*.user
+*.suo
+*.rsuser
+mono_crash.*
+.mono/
+
+# --- IDE ---
+.vs/
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# --- OS ---
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+~$*
+
+# --- Build output (keep folder) ---
+/build/*
+!/build/.gitkeep
+
+# --- Local telemetry / test output ---
+/tools/output/
+
+# --- Third-party material that must never be committed (see docs/ASSET_PROVENANCE.md) ---
+/SFX_PACK/

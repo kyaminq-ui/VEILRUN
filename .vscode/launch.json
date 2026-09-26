@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Play (Godot, attach C# debugger)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${env:GODOT}",
+      "args": ["--path", "${workspaceFolder}"],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Tests (Godot headless, C# debugger)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${env:GODOT}",
+      "args": ["--headless", "--path", "${workspaceFolder}", "res://Scenes/Tests/TestRunner.tscn"],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false
+    }
+  ]
+}

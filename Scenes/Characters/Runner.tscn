@@ -1,0 +1,61 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Runner.cs" id="1_runner"]
+[ext_resource type="Resource" path="res://Resources/Movement/DefaultMovementTuning.tres" id="2_move"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerInput.cs" id="3_input"]
+[ext_resource type="Resource" path="res://Resources/Settings/DefaultUserSettings.tres" id="4_settings"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerCamera.cs" id="5_camera"]
+[ext_resource type="Resource" path="res://Resources/Movement/DefaultCameraTuning.tres" id="6_camtuning"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerAudio.cs" id="7_audio"]
+[ext_resource type="Resource" path="res://Resources/Audio/DefaultMovementAudio.tres" id="8_audiobank"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_placeholder"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_placeholder"]
+albedo_color = Color(0.15, 0.75, 0.85, 1)
+
+[node name="Runner" type="CharacterBody3D" node_paths=PackedStringArray("PlayerInput", "PlayerCamera", "CollisionShape", "PlayerAudio")]
+script = ExtResource("1_runner")
+Tuning = ExtResource("2_move")
+PlayerInput = NodePath("PlayerInput")
+PlayerCamera = NodePath("PlayerCamera")
+CollisionShape = NodePath("Collision")
+PlayerAudio = NodePath("PlayerAudio")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="BodyPlaceholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+cast_shadow = 3
+mesh = SubResource("CapsuleMesh_placeholder")
+surface_material_override/0 = SubResource("StandardMaterial3D_placeholder")
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("3_input")
+Settings = ExtResource("4_settings")
+
+[node name="PlayerCamera" type="Node3D" parent="." node_paths=PackedStringArray("Camera")]
+top_level = true
+script = ExtResource("5_camera")
+Tuning = ExtResource("6_camtuning")
+Settings = ExtResource("4_settings")
+Camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="PlayerCamera"]
+keep_aspect = 0
+current = true
+fov = 95.0
+near = 0.05
+far = 1500.0
+
+[node name="PlayerAudio" type="Node" parent="."]
+script = ExtResource("7_audio")
+Bank = ExtResource("8_audiobank")

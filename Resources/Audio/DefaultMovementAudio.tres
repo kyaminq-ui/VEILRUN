@@ -1,0 +1,97 @@
+[gd_resource type="Resource" script_class="MovementAudioBank" load_steps=41 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Audio/MovementAudioBank.cs" id="1_Script"]
+[ext_resource type="Script" path="res://Scripts/Audio/SfxEvent.cs" id="2_Script"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_01.wav" id="3_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_02.wav" id="4_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_03.wav" id="5_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_04.wav" id="6_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_05.wav" id="7_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_06.wav" id="8_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_07.wav" id="9_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_concrete_08.wav" id="10_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_01.wav" id="11_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_02.wav" id="12_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_03.wav" id="13_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_04.wav" id="14_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_05.wav" id="15_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/footstep_metal_06.wav" id="16_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/jump_01.wav" id="17_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/jump_02.wav" id="18_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/jump_03.wav" id="19_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/jump_04.wav" id="20_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_soft_01.wav" id="21_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_soft_02.wav" id="22_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_soft_03.wav" id="23_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_medium_01.wav" id="24_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_medium_02.wav" id="25_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_medium_03.wav" id="26_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_heavy_01.wav" id="27_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_heavy_02.wav" id="28_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_heavy_03.wav" id="29_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/land_deadly_01.wav" id="30_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_calm_loop.wav" id="31_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/breath_heavy_loop.wav" id="32_AudioStream"]
+[ext_resource type="AudioStream" path="res://Assets/Audio/SFX/Placeholder/Movement/wind_loop.wav" id="33_AudioStream"]
+
+[sub_resource type="Resource" id="SfxEvent_FootstepConcrete"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("3_AudioStream"), ExtResource("4_AudioStream"), ExtResource("5_AudioStream"), ExtResource("6_AudioStream"), ExtResource("7_AudioStream"), ExtResource("8_AudioStream"), ExtResource("9_AudioStream"), ExtResource("10_AudioStream")])
+VolumeDb = -6.0
+RandomPitchSemitones = 1.2
+RandomVolumeDb = 2.0
+
+[sub_resource type="Resource" id="SfxEvent_FootstepMetal"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("11_AudioStream"), ExtResource("12_AudioStream"), ExtResource("13_AudioStream"), ExtResource("14_AudioStream"), ExtResource("15_AudioStream"), ExtResource("16_AudioStream")])
+VolumeDb = -7.0
+RandomPitchSemitones = 0.8
+RandomVolumeDb = 2.0
+
+[sub_resource type="Resource" id="SfxEvent_Jump"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("17_AudioStream"), ExtResource("18_AudioStream"), ExtResource("19_AudioStream"), ExtResource("20_AudioStream")])
+VolumeDb = -8.0
+RandomPitchSemitones = 1.0
+RandomVolumeDb = 1.5
+
+[sub_resource type="Resource" id="SfxEvent_LandSoft"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("21_AudioStream"), ExtResource("22_AudioStream"), ExtResource("23_AudioStream")])
+VolumeDb = -6.0
+RandomPitchSemitones = 1.0
+RandomVolumeDb = 1.5
+
+[sub_resource type="Resource" id="SfxEvent_LandMedium"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("24_AudioStream"), ExtResource("25_AudioStream"), ExtResource("26_AudioStream")])
+VolumeDb = -3.0
+RandomPitchSemitones = 0.8
+RandomVolumeDb = 1.0
+
+[sub_resource type="Resource" id="SfxEvent_LandHeavy"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("27_AudioStream"), ExtResource("28_AudioStream"), ExtResource("29_AudioStream")])
+VolumeDb = -1.0
+RandomPitchSemitones = 0.6
+RandomVolumeDb = 1.0
+
+[sub_resource type="Resource" id="SfxEvent_LandDeadly"]
+script = ExtResource("2_Script")
+Variants = Array[AudioStream]([ExtResource("30_AudioStream")])
+VolumeDb = 0.0
+RandomPitchSemitones = 0.3
+RandomVolumeDb = 0.5
+
+[resource]
+script = ExtResource("1_Script")
+FootstepConcrete = SubResource("SfxEvent_FootstepConcrete")
+FootstepMetal = SubResource("SfxEvent_FootstepMetal")
+Jump = SubResource("SfxEvent_Jump")
+LandSoft = SubResource("SfxEvent_LandSoft")
+LandMedium = SubResource("SfxEvent_LandMedium")
+LandHeavy = SubResource("SfxEvent_LandHeavy")
+LandDeadly = SubResource("SfxEvent_LandDeadly")
+BreathCalmLoop = ExtResource("31_AudioStream")
+BreathHeavyLoop = ExtResource("32_AudioStream")
+WindLoop = ExtResource("33_AudioStream")

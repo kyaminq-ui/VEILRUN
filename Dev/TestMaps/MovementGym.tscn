@@ -1,0 +1,465 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Characters/Runner.tscn" id="1_runner"]
+[ext_resource type="Texture2D" path="res://Dev/Textures/Grid/PNG/Dark_Floor/texture_03.png" id="2_floor"]
+[ext_resource type="Texture2D" path="res://Dev/Textures/Grid/PNG/Orange_Wall/texture_04.png" id="3_orange"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(1, 1, 1, 1)
+albedo_texture = ExtResource("2_floor")
+roughness = 0.9
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="Mat_obstacle"]
+albedo_color = Color(1, 1, 1, 1)
+albedo_texture = ExtResource("3_orange")
+roughness = 0.9
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.62, 0.66, 0.78, 1)
+albedo_texture = ExtResource("2_floor")
+roughness = 0.9
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="Mat_ramp"]
+albedo_color = Color(0.45, 0.75, 1, 1)
+albedo_texture = ExtResource("2_floor")
+roughness = 0.9
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_mat"]
+sky_top_color = Color(0.32, 0.42, 0.6, 1)
+sky_horizon_color = Color(0.72, 0.74, 0.8, 1)
+ground_bottom_color = Color(0.12, 0.12, 0.14, 1)
+ground_horizon_color = Color(0.72, 0.74, 0.8, 1)
+
+[sub_resource type="Sky" id="Sky_res"]
+sky_material = SubResource("Sky_mat")
+
+[sub_resource type="Environment" id="Env"]
+background_mode = 2
+sky = SubResource("Sky_res")
+ambient_light_source = 3
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[node name="MovementGym" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, 0.40558, -0.40558, 0, 0.707107, 0.707107, 0.573576, -0.579228, 0.579228, 0, 20, 0)
+light_energy = 1.1
+shadow_enabled = true
+directional_shadow_max_distance = 120.0
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(200, 1, 200)
+material = SubResource("Mat_floor")
+
+[node name="GapDeck" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -20, 1, -6)
+use_collision = true
+size = Vector3(24, 2, 12)
+material = SubResource("Mat_obstacle")
+
+[node name="GapDeckRamp" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.980581, -0.196116, 0, 0.196116, 0.980581, -20, 0.803884, 4.96078)
+use_collision = true
+size = Vector3(24, 0.4, 10.198)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="GapLanding_2m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -30, 1, -18)
+use_collision = true
+size = Vector3(3, 2, 8)
+material = SubResource("Mat_obstacle")
+
+[node name="GapLanding_3m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -25, 1, -19)
+use_collision = true
+size = Vector3(3, 2, 8)
+material = SubResource("Mat_obstacle")
+
+[node name="GapLanding_4m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -20, 1, -20)
+use_collision = true
+size = Vector3(3, 2, 8)
+material = SubResource("Mat_obstacle")
+
+[node name="GapLanding_5m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -15, 1, -21)
+use_collision = true
+size = Vector3(3, 2, 8)
+material = SubResource("Mat_obstacle")
+
+[node name="GapLanding_6m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -10, 1, -22)
+use_collision = true
+size = Vector3(3, 2, 8)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_0.5m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 4, 0.25, -6)
+use_collision = true
+size = Vector3(2, 0.5, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_0.9m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 7, 0.45, -6)
+use_collision = true
+size = Vector3(2, 0.9, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_1.2m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 10, 0.6, -6)
+use_collision = true
+size = Vector3(2, 1.2, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_1.5m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 13, 0.75, -6)
+use_collision = true
+size = Vector3(2, 1.5, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_2.0m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 16, 1, -6)
+use_collision = true
+size = Vector3(2, 2, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_2.5m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 19, 1.25, -6)
+use_collision = true
+size = Vector3(2, 2.5, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="Height_3.0m" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 22, 1.5, -6)
+use_collision = true
+size = Vector3(2, 3, 2)
+material = SubResource("Mat_obstacle")
+
+[node name="DropRamp" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.957826, -0.287348, 0, 0.287348, 0.957826, 36, 5.80843, -10.0575)
+use_collision = true
+size = Vector3(4, 0.4, 41.7612)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="DropDeck" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 36, 11.5, -33)
+use_collision = true
+size = Vector3(6, 1, 6)
+material = SubResource("Mat_obstacle")
+
+[node name="Slope_20deg" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, -0.34202, 0, 0.34202, 0.939693, 50, 1.86418, -5.70656)
+use_collision = true
+size = Vector3(4, 0.4, 12)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="Slope_35deg" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 56, 3.27763, -5.02963)
+use_collision = true
+size = Vector3(4, 0.4, 12)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="Slope_45deg" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 62, 4.10122, -4.38406)
+use_collision = true
+size = Vector3(4, 0.4, 12)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="Slope_50deg" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, -0.766044, 0, 0.766044, 0.642788, 68, 4.46771, -4.00993)
+use_collision = true
+size = Vector3(4, 0.4, 12)
+material = SubResource("Mat_ramp")
+metadata/surface = "metal"
+
+[node name="WallRunWall" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -45, 2, -10)
+use_collision = true
+size = Vector3(1, 4, 24)
+material = SubResource("Mat_wall")
+
+[node name="CorridorWallA" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -52, 1.5, -10)
+use_collision = true
+size = Vector3(0.5, 3, 10)
+material = SubResource("Mat_wall")
+
+[node name="CorridorWallB" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -53.7, 1.5, -10)
+use_collision = true
+size = Vector3(0.5, 3, 10)
+material = SubResource("Mat_wall")
+
+[node name="DoorWall" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -45, 1.5, 12)
+use_collision = true
+size = Vector3(4, 3, 0.3)
+material = SubResource("Mat_wall")
+
+[node name="DoorOpening" type="CSGBox3D" parent="Geometry/DoorWall"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 0, -0.45, 0)
+operation = 2
+size = Vector3(1, 2.1, 1)
+
+[node name="Labels" type="Node3D" parent="."]
+
+[node name="L00_SPAWN" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 0, 2.6, 8)
+billboard = 1
+modulate = Color(0.4, 1, 0.9, 1)
+text = "SPAWN"
+font_size = 72
+outline_size = 18
+
+[node name="L01_GAP_JUMPS___deck__2_m_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -20, 4.2, -1)
+billboard = 1
+modulate = Color(1, 0.8, 0.4, 1)
+text = "GAP JUMPS  (deck +2 m)"
+font_size = 72
+outline_size = 18
+
+[node name="L02_2_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -30, 3.2, -14.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "2 m"
+font_size = 72
+outline_size = 18
+
+[node name="L03_3_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -25, 3.2, -15.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "3 m"
+font_size = 72
+outline_size = 18
+
+[node name="L04_4_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -20, 3.2, -16.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "4 m"
+font_size = 72
+outline_size = 18
+
+[node name="L05_5_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -15, 3.2, -17.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "5 m"
+font_size = 72
+outline_size = 18
+
+[node name="L06_6_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -10, 3.2, -18.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "6 m"
+font_size = 72
+outline_size = 18
+
+[node name="L07_HEIGHTS" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 13, 4.5, -6)
+billboard = 1
+modulate = Color(1, 0.8, 0.4, 1)
+text = "HEIGHTS"
+font_size = 72
+outline_size = 18
+
+[node name="L08_0_5_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 4, 1.2, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "0.5 m"
+font_size = 72
+outline_size = 18
+
+[node name="L09_0_9_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 7, 1.6, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "0.9 m"
+font_size = 72
+outline_size = 18
+
+[node name="L10_1_2_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 10, 1.9, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "1.2 m"
+font_size = 72
+outline_size = 18
+
+[node name="L11_1_5_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 13, 2.2, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "1.5 m"
+font_size = 72
+outline_size = 18
+
+[node name="L12_2_0_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 16, 2.7, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "2.0 m"
+font_size = 72
+outline_size = 18
+
+[node name="L13_2_5_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 19, 3.2, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "2.5 m"
+font_size = 72
+outline_size = 18
+
+[node name="L14_3_0_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 22, 3.7, -6)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "3.0 m"
+font_size = 72
+outline_size = 18
+
+[node name="L15_DROP_HEIGHTS" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 36, 3, 13)
+billboard = 1
+modulate = Color(1, 0.8, 0.4, 1)
+text = "DROP HEIGHTS"
+font_size = 72
+outline_size = 18
+
+[node name="L16_3_2_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 38.6, 3.8, -0.666667)
+billboard = 1
+modulate = Color(1, 0.55, 0.45, 1)
+text = "3.2 m"
+font_size = 72
+outline_size = 18
+
+[node name="L17_5_12_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 38.6, 5.72, -7.06667)
+billboard = 1
+modulate = Color(1, 0.55, 0.45, 1)
+text = "5.12 m"
+font_size = 72
+outline_size = 18
+
+[node name="L18_6_45_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 38.6, 7.05, -11.5)
+billboard = 1
+modulate = Color(1, 0.55, 0.45, 1)
+text = "6.45 m"
+font_size = 72
+outline_size = 18
+
+[node name="L19_8_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 38.6, 8.6, -16.6667)
+billboard = 1
+modulate = Color(1, 0.55, 0.45, 1)
+text = "8 m"
+font_size = 72
+outline_size = 18
+
+[node name="L20_12_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 38.6, 12.6, -30)
+billboard = 1
+modulate = Color(1, 0.55, 0.45, 1)
+text = "12 m"
+font_size = 72
+outline_size = 18
+
+[node name="L21_SLOPES" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 59, 6.5, -2)
+billboard = 1
+modulate = Color(1, 0.8, 0.4, 1)
+text = "SLOPES"
+font_size = 72
+outline_size = 18
+
+[node name="L22_20_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 50, 1.5, 1.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "20°"
+font_size = 72
+outline_size = 18
+
+[node name="L23_35_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 56, 1.5, 1.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "35°"
+font_size = 72
+outline_size = 18
+
+[node name="L24_45_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 62, 1.5, 1.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "45°"
+font_size = 72
+outline_size = 18
+
+[node name="L25_50_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 68, 1.5, 1.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "50°"
+font_size = 72
+outline_size = 18
+
+[node name="L26_WALL__wall_run__M2_" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -43.5, 4.8, -10)
+billboard = 1
+modulate = Color(1, 0.8, 0.4, 1)
+text = "WALL (wall-run, M2)"
+font_size = 72
+outline_size = 18
+
+[node name="L27_CORRIDOR_1_2_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -52.85, 3.6, -4.5)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "CORRIDOR 1.2 m"
+font_size = 72
+outline_size = 18
+
+[node name="L28_DOOR_1_0_x_2_1_m" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, -45, 3.6, 12)
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+text = "DOOR 1.0 x 2.1 m"
+font_size = 72
+outline_size = 18
+
+[node name="Runner" parent="." instance=ExtResource("1_runner")]
+transform = Transform3D(1, 0, 0, 0, 1, -0, 0, 0, 1, 0, 0.05, 8)
