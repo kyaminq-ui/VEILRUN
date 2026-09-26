@@ -14,6 +14,11 @@ dotnet build VEILRUN.csproj
 ```
 Chemin de Godot : variable `GODOT`, sinon `~/Desktop/Godot_v4.7.2-stable_mono_win64/…_console.exe`.
 
+## Reprendre le projet (nouvelle conversation)
+- `resume_prompt.md` : prompt à coller tel quel dans une nouvelle conversation Claude Code.
+- `CLAUDE.md` : règles opérationnelles et pièges connus (chargé automatiquement par Claude Code).
+- `docs/HANDOFF.md` : état exact du projet et prochaine tranche ; `docs/MASTER_PROMPT.md` : vision et règles complètes.
+
 ## Documentation
 Tout est dans [`docs/`](docs/) : commencer par `ROADMAP.md`, `TDD.md` et `PARKOUR_METRICS.md`. Décisions d'architecture : `DECISIONS.md`.
 
